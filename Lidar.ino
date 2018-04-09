@@ -12,7 +12,7 @@
 
 //int ButtonValue = 0;
 //int Button = 3;
-int LED = 2;
+
 
 
 int pos = 0;      // Position of the servo (degress, [0, 180])
@@ -81,7 +81,6 @@ void loop()
     //ButtonValue = digitalRead(Button);
 
 
-        digitalWrite(LED, HIGH);
         long duration, distance_ultra = 0, test = 0;
 
         //--------------------------
@@ -101,7 +100,7 @@ void loop()
             duration = pulseIn(echoPin, HIGH);
             distance_ultra = (duration / 2) / 29.1;
 
-            test = distance_ultra;
+            //test = distance_ultra;
 
             if (distance < 10 || distance_ultra < 10) // Checking the distance, you can change the value
             {
@@ -121,51 +120,16 @@ void loop()
                 digitalWrite(led, LOW);
                 digitalWrite(vibMot, LOW);
             }
-            delay(200);
 
-            serialPrintRange(pos, distance, test);
-            delay(200);
+            if (distance > 50 || distance_ultra > 50) {
+              Serial.print("out of range");
+            }
+
+            serialPrintRange(pos, distance, distance_ultra);
+            delay(500);
         }
 
-        for (pos = 180; pos >= 0; pos -= 1)
-        {
-            
-            // digitalWrite(buzzer,HIGH);
-            digitalWrite(led, LOW);
-            distance = lidarGetRange();
-            digitalWrite(trigPin, LOW);
-            delayMicroseconds(2);
-            digitalWrite(trigPin, HIGH);
-            delayMicroseconds(10);
-            digitalWrite(trigPin, LOW);
-            duration = pulseIn(echoPin, HIGH);
-            distance_ultra = (duration / 2) / 29.1;
 
-            distance_ultra;
-            test = distance_ultra;
-
-            if (distance <= 10 || distance_ultra < 10) // Checking the distance, you can change the value
-            {
-
-                digitalWrite(vibMot, HIGH);
-                digitalWrite(led, HIGH);
-                delay(200);
-                digitalWrite(led, LOW);
-                delay(200);
-                digitalWrite(led, HIGH);
-                delay(200);
-                digitalWrite(led, HIGH);
-            }
-            else
-            {
-
-                digitalWrite(led, HIGH);
-                digitalWrite(vibMot, LOW);
-            }
-            delay(200);
-            serialPrintRange(pos, distance, test);
-            delay(200);
-        }
    }
   
     
